@@ -1,12 +1,11 @@
 import pandas as pd
 
 
-def add_roads(src: pd.DataFrame):
+def add_roads(path_train: str, src: pd.DataFrame):
     if 'road_id' in src.columns:
         print('road_id already in df. Exitting')
         return src
 
-    path_train = r"./train/"
     stations_data = pd.read_parquet(path_train + '/stations.parquet').convert_dtypes()
 
     functions = {}
@@ -22,7 +21,7 @@ def add_roads(src: pd.DataFrame):
 
     station_to_road = stations_data[['st_id', 'road_id']].drop_duplicates()
 
-    data = df.merge(station_to_road, how='left', left_on='st_id_dest', right_on='st_id')
+    data = src.merge(station_to_road, how='left', left_on='st_id_dest', right_on='st_id')
     data = data.merge(station_to_road, how='left', left_on='st_id_send', right_on='st_id')
 
     data['road_id_x'].fillna(data['road_id_y'], inplace=True)
