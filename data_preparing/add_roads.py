@@ -2,6 +2,7 @@ import pandas as pd
 
 
 def add_roads(path_train: str, src: pd.DataFrame):
+    '''Функция, которая добавляет данные про соответствующуюю дорогу к каждой записи в датасете'''
     if 'road_id' in src.columns:
         print('road_id already in df. Exitting')
         return src
@@ -31,10 +32,3 @@ def add_roads(path_train: str, src: pd.DataFrame):
     data = data.merge(roads, how='left', on='road_id')
 
     return data
-
-
-if __name__ == '__main__':
-    PATH = '???'
-    df = pd.read_csv(PATH)
-    df = add_roads(df)
-    df.to_csv(PATH)
